@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+
+  blog-frontend:
+    restart:
+      always
+    build:
+      context: ./
+      dockerfile: ./docker/frontend/Dockerfile
+    ports:
+      - '9001:9001'
+    volumes:
+      - "./frontend:/usr/src/app"
+      - "./uploads:/uploads"
+    depends_on:
+      - server
+      - mongodb
+    networks:
+      - local
+    command: "npm run docker-dev"
+
+  blog-server:
+    build:
+      context: ./
+      dockerfile: ./docker/server/Dockerfile
+      args:
+        WORKDIR: ${PROJECT_ROOT}
+    networks:
+      - local
+    depends_on:
+      - db
+    env_file:
+      - ./server/.env
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+
+  blog-pma:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - db
+    networks:
+      - local
+
+  blog-db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - local
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+networks:
+  local:

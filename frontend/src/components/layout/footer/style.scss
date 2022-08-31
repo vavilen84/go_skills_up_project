@@ -1,0 +1,19 @@
+.footer{
+  background-color: transparent;
+  border-top: 1px solid #222222;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+  color: white;
+
+  @media screen and (max-width: 400px) {
+    height: 120px;
+  }
+
+  .footer-info{
+    margin-top: 20px;
+    color: #222222;
+  }
+}
