@@ -31,6 +31,10 @@ func BuildV1Paths() *chi.Mux {
 	r.Route("/posts", func(r chi.Router) {
 		c := PostsController{}
 		r.Post("/", c.Create)
+		r.Put("/{ID}", c.Update)
+		r.Delete("/{ID}", c.Delete)
+		r.Get("/{ID}", c.GetOne)
+		r.Get("/", c.GetAll)
 	})
 	return r
 }

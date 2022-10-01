@@ -7,7 +7,6 @@ import (
 	"github.com/vavilen84/go_skills_up_project/helpers"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 	"os"
 	"time"
 )
@@ -37,7 +36,7 @@ func processInitDb(sqlServerDsn, mysqlDbName, DbDsn string) (db *gorm.DB) {
 	ctx := GetDefaultDBContext()
 	conn, err := sqlDb.Conn(ctx)
 	if err != nil {
-		log.Println(err)
+		helpers.LogError(err)
 	}
 	defer conn.Close()
 	err = createDbIfNotExists(ctx, conn, mysqlDbName)
