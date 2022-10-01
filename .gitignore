@@ -6,5 +6,6 @@ uploads/*
 tmp/*
 !tmp/.gitignore
 app/tmp/*
+app/tmp/app
 !app/tmp/.gitignore
 

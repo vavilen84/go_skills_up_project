@@ -2,7 +2,22 @@ version: '3.8'
 
 services:
 
+  interngram-db-migrations:
+    container_name: "migrate"
+    build:
+      dockerfile: ./docker/migrate/Dockerfile
+      context: .
+      args:
+        WORKDIR: ${WORKING_DIR}
+    env_file:
+      - ".env"
+    volumes:
+      - ./migrations:${WORKING_DIR}/migrations
+      - ./shell:${WORKING_DIR}/shell
+    tty: true
+
   interngram-app:
+    container_name: "app"
     build:
       context: ./
       dockerfile: ./docker/app/Dockerfile
@@ -21,7 +36,8 @@ services:
     ports:
       - "8080:8080"
 
-  interngram--pma:
+  interngram-pma:
+    container_name: "pma"
     image: phpmyadmin/phpmyadmin
     ports:
       - "8081:80"
@@ -33,6 +49,7 @@ services:
       - local
 
   interngram-db:
+    container_name: "db"
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
