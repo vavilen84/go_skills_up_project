@@ -7,9 +7,8 @@ import (
 )
 
 type Post struct {
-	Id      string `json:"id" column:"id" validate:"required,uuid4" skip_on_update:"true"`
-	Title   string `json:"title" column:"title" validate:"required,min=2,max=255"`
-	Content string `json:"content" column:"content" validate:"required,min=2,max=5000"`
+	Id          string `json:"id" column:"id" gorm:"primaryKey;autoIncrement:true"`
+	Description string `json:"description" column:"description" validate:"required,min=2,max=5000"`
 }
 
 func (Post) TableName() string {

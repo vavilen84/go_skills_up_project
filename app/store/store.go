@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/vavilen84/go_skills_up_project/constants"
+	"github.com/vavilen84/go_skills_up_project/helpers"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -14,7 +15,7 @@ import (
 func createDbIfNotExists(ctx context.Context, conn *sql.Conn, dbName string) (err error) {
 	_, err = conn.ExecContext(ctx, "CREATE DATABASE IF NOT EXISTS "+dbName)
 	if err != nil {
-		log.Print(err.Error())
+		helpers.LogError(err)
 		return err
 	}
 	return nil
@@ -48,6 +49,7 @@ func processInitDb(sqlServerDsn, mysqlDbName, DbDsn string) (db *gorm.DB) {
 	if err != nil {
 		panic("failed to database: " + err.Error())
 	}
+	db.Debug()
 	sqlDB, err := db.DB()
 
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
